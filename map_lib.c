@@ -28,7 +28,7 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include "map_lib.h"
 
@@ -38,6 +38,7 @@ struct map_t *map_create() {
    m->name=NULL;
    m->value=NULL;
    m->nxt=NULL;
+   return m;
 }
 
 
@@ -53,7 +54,7 @@ void map_set(struct map_t *m,char *name,char *value) {
       return;
    }
    for(map=m;;map=map->nxt) {
-      if(!stricmp(name,map->name)) {
+      if(!strcasecmp(name,map->name)) {
          if(map->value!=NULL) {
             free(map->value);
             map->value=(char *)malloc(strlen(value)+1);
@@ -77,7 +78,7 @@ void map_set(struct map_t *m,char *name,char *value) {
 char *map_get(struct map_t *m,char *name) {
    struct map_t *map;
    for(map=m;map!=NULL;map=map->nxt) {
-      if(!stricmp(name,map->name)) {
+      if(!strcasecmp(name,map->name)) {
          return map->value;
       }
    }
