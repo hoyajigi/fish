@@ -1,0 +1,20 @@
+#include <unistd.h>
+#include <sys/wait.h>
+
+int process (const char* path, const char* command[])
+{
+    pid_t child_pid;
+    int meg = 0;
+    
+    if (!(*path) || !command)
+        return 1;
+    
+    child_pid = fork();
+    
+    wait(&child_pid);
+    
+    if (!child_pid)
+        meg = execv (path, (char** const) command);
+    
+    return 0;
+}
