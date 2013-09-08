@@ -2,6 +2,8 @@
 #include<stdlib.h>
 #include<unistd.h>
 
+#include "env.h"
+
 #define MAX_PATH	100
 #define LF			10
 
