@@ -6,7 +6,7 @@ INC =
 LIBS = 
 CFLAGS = -g $(INC) 
 
-OBJS = main.c 
+OBJS = main.c env.c 
 SRCS =  
 
 TARGET = fish
