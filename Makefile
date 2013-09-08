@@ -14,7 +14,7 @@ TARGET = fish
 all : $(TARGET)
 
 $(TARGET) : $(OBJS)
-	$(CC) -o $@ $(OBJS) $(LIBS)
+	$(CC) -Wall -o $@ $(OBJS) $(LIBS)
 
 dep :
 	gccmakedep $(INC) $(SRCS)
