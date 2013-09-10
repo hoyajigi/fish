@@ -1,20 +1,49 @@
+//
+//  process.c
+//  FIsh.Anchovy
+//
+//  Created by Junsu Kim on 9/8/13.
+//  Copyright (c) 2013 Junsu Kim. All rights reserved.
+//
+
 #include <unistd.h>
 #include <sys/wait.h>
+#include <string.h>
+#include <stdlib.h>
 
 int process (const char* path, const char* command[])
 {
     pid_t child_pid;
+    char* n_path;                                               // Temp path
     int meg = 0;
     
-    if (!(*path) || !command)
+    if (!(*path) || !command)                                   // Parameter Check
         return 1;
     
-    child_pid = fork();
+    child_pid = fork();                                         // Make Child Process
     
-    wait(&child_pid);
+    wait(&child_pid);                                           // Parent Process wait until end of child Process
     
-    if (!child_pid)
-        meg = execv (path, (char** const) command);
+    if (!child_pid)                                             // Select the Child Process
+        meg = execv (path, (char** const) command);             // Change Child Process
     
-    return 0;
+    n_path = (char*) malloc(strlen(path));                      // Sync size of path and n_path
+    
+    if (meg == -1)                                              // Child Process Failed
+    {
+        strcpy(n_path, path);                                   // Value of n_path copy path
+        strcat(n_path, *(command + 0));                         // n_path += command
+        
+        meg = execv (n_path, (char** const) command);           // Retry to Change Process
+        
+        strcpy(n_path, path);                                   // Value of n_path copy path
+        strcat(n_path, "/");                                    // n_path += /
+        strcat(n_path, *(command + 0));                         // n_path += command
+        
+        meg = execv (n_path, (char** const) command);           // Retry to Change Process
+    }
+    
+    free(n_path);                                               // Memory DeMalloc
+    
+    return 0;                                                   // End
 }
